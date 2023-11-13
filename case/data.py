@@ -5,13 +5,14 @@
 import time
 from appium import webdriver
 from appium.webdriver.common.appiumby import AppiumBy
+from case.verification_code import get_verification_code, b
 
 
 # 定义Android运行环境
 class App_config:
     def setup(self):
         desired_caps = {
-            "deviceName": "NDPBB23129202538",  # 启动的设备
+            "deviceName": "4fb5de03",  # 启动的设备
             "automationName": "Appium",  # 使用的自动化引擎，如appium（默认）或Selendroid
             "platformName": "Android",  # 使用的移动平台，如Android或IOs
             # adb shell getprop ro.build.version.release，获取设备Android系统版本（即platformVersion）
@@ -37,6 +38,7 @@ class App_config:
      # 回收session
        self.driver.quit()
     def test_api_demo(self):
+       self.driver.implicitly_wait(5)
 # 1、使用ID定位（切换tab页）
        self.driver.find_element(AppiumBy.ID,"com.orcbit.oladanceearphone:id/iv_account").click()
 
@@ -53,12 +55,26 @@ class App_config:
 # 5、使用ID定位（输入手机号码登录）
        self.driver.find_element(AppiumBy.ID,"com.orcbit.oladanceearphone:id/et_name").send_keys("13570368266")
 
-       # time.sleep(5)
-
 # 6、使用ID定位（获取验证码）
        self.driver.find_element(AppiumBy.ID,"com.orcbit.oladanceearphone:id/tv_next").click()
+#
+#        time.sleep(5)
+# implicitly_wait()是由webdriver提供的隐式等待方法，它不是针对某一个元素，
+# 而是针对当前session（即当前driver对象的生命周期）的全部元素，所以只需要在构造driver对象时设置一次即可。
+# 隐式等待在定位元素时，需等待该页面全部元素加载完成，才会执行下一步操作（即下一条语句），如果超过设定时间未加载完成则抛出异常。
+#        self.driver.find_element(AppiumBy.XPATH,
+#        "//android.widget.LinearLayout[@resource-id='com.orcbit.oladanceearphone:id/vg_code']/android.widget.TextView[1]").click()
+#        element = self.driver.find_element(AppiumBy.XPATH, "//android.widget.LinearLayout[@resource-id='com.orcbit.oladanceearphone:id/vg_code']/android.widget.TextView[1]")
+#        if element.is_enabled():
+#            element.click()
+#            print('元素可点击')
+#        else:
+#            print("元素不可交互")
+       # self.driver.find_element(AppiumBy.XPATH,
+       # "//android.widget.LinearLayout[@resource-id='com.orcbit.oladanceearphone:id/vg_code']/android.widget.TextView[1]").\
+       #     send_keys(b[0],b[1],b[2],b[3])
 
-       self.driver.implicitly_wait(5)
+
 
 
 
